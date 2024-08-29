@@ -16,20 +16,11 @@ class Cards {
 
     public:
         Cards(string link) {
-            //cout << link << endl;
-
             Card_text = parse_file(link);
             for (int i = 0; i < Card_text.size(); i++) {
                 card_infos = separate_infos(Card_text[i]);
                 cards_info.push_back(card_infos);
             }
-    //        for (int j = 0; j < cards_info.size(); j++) {
-    //            if (!cards_info[j].empty()) {
-    //                cout << cards_info[j][2];
-    //                cout << endl;
-    //            }
-    //        }
-        cout << cards_info.size() << endl << endl << endl;
         }
     private:
         vector<string> parse_file(string link) {
@@ -81,11 +72,9 @@ vector<vector<string>> compare_infos(vector<vector<string>> box, vector<vector<s
     return binder;
 }
 
-int main() {
-    Cards Box_csv("moxfield_haves_2024-08-29-1530Z.csv");
-    Cards Binder_csv("empty.csv");
-    vector<vector<string>> new_csv = compare_infos(Box_csv.cards_info, Binder_csv.cards_info);
+void print_in_file(vector<vector<string>> new_csv) {
     ofstream output_file("Binder.csv");
+
     output_file << "\"Count\",\"Tradelist Count\",\"Name\",\"Edition\",\"Condition\",\"Language\",\"Foil\",\"Tags\",\"Last Modified\",\"Collector Number\",\"Alter\",\"Proxy\",\"Purchase Price\"\r";
     for (int i = 0; i < new_csv.size(); i++) {
         for (int j = 0; j < new_csv[i].size(); j++) {
@@ -96,5 +85,12 @@ int main() {
         }
         output_file << "\r";
     }
+    output_file.close();
+}
 
+int main() {
+    Cards Box_csv("moxfield_haves_2024-08-29-1530Z.csv");
+    Cards Binder_csv("empty.csv");
+    vector<vector<string>> new_csv = compare_infos(Box_csv.cards_info, Binder_csv.cards_info);
+    print_in_file(new_csv);
 }
